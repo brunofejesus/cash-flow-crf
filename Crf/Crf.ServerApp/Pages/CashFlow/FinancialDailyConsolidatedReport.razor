@@ -1,0 +1,136 @@
+﻿@page "/report"
+@using Crf.Application.CashFlow.Interfaces;
+@using Crf.Application.CashFlow.Models;
+@using Crf.Application.CashFlow.Queries.GetReportOfDailyConsolidated;
+
+@inject IFinancialDailyConsolidatedReport _financialReportService;
+@inject IJSRuntime _jsRuntime
+
+@attribute [Authorize]
+
+<div class="row mt-4">
+	<div class="col-6">
+		<h4 class="card-title text-primary">Financial Daily Consolidated Report</h4>
+	</div>
+
+	<div class="form-group">
+		<label class="form-label">Enter Date</label>
+		<DateInput TValue="DateTime?" @bind-Value="Query.Date" Placeholder="Enter Date" class="form-control" />
+		<Button Color="ButtonColor.Success" @onclick="() => LoadReport()">Generate</Button>
+	</div>
+
+	<div class="col-12 p-3">
+		@if (ValidConditionGridReport())
+		{
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Type</th>
+						<th>Description</th>
+						<th>Date</th>
+						<th>Amount</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var reportItem in Result!.Report!.Itens!)
+					{
+						<tr>
+							<td>
+								@reportItem?.TypeActivity?.ToString()
+							</td>
+							<td>
+								@reportItem?.Description
+							</td>
+							<td>
+								@reportItem?.Created?.ToString("yyyy-MM-dd HH:mm:ss")
+							</td>
+							<td>
+								$ @reportItem?.Amount?.ToString("N2")
+							</td>
+						</tr>
+					}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="3">Amount Inflows</td>
+						<td>$ @Result?.Report?.AmountInflows?.ToString("N2")</td>
+					</tr>
+					<tr>
+						<td colspan="3">Amount Outflows</td>
+						<td>$ @Result?.Report?.AmountOutflows?.ToString("N2")</td>
+					</tr>
+					<tr>
+						<td colspan="3">Balance</td>
+						<td>@CalculateBalance()</td>
+					</tr>
+				</tfoot>
+			</table>
+		}
+		else
+		{
+			if (IsLoading)
+			{
+				//loading gif
+				<div class="text-center">
+					<img src="/images/loading.gif">
+				</div>
+			}
+			else
+			{
+				//no records
+				<p>No records found.</p>
+			}
+		}
+	</div>
+</div>
+
+@code {
+	private FinancialReportResult? Result;
+
+	private GetReportOfDailyConsolidatedQuery Query { get; set; } = new GetReportOfDailyConsolidatedQuery();
+	public bool IsLoading { get; set; }
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			await LoadReport();
+		}
+	}
+
+	private async Task LoadReport()
+	{
+		IsLoading = true;
+		StateHasChanged();
+		Result = await _financialReportService.GetDailyConsolidatedReport(Query);
+		if (Result.Succeeded)
+		{
+			await _jsRuntime.InvokeVoidAsync("ShowToastr", "success", "Successfully");
+		}
+		if (!Result.Succeeded)
+		{
+			var messageError = Result.Errors.FirstOrDefault();
+			await _jsRuntime.InvokeVoidAsync("ShowToastr", "error", messageError!);
+		}
+		IsLoading = false;
+		StateHasChanged();
+	}
+
+	private bool ValidConditionGridReport()
+	{
+		return Result is not null 
+		&& Result.Report is not null 
+		&& Result.Succeeded 
+		&& Result.Report.Itens is not null 
+		&& Result.Report.Itens.Any();
+	}
+
+	private string CalculateBalance()
+	{
+		var balance = Result?.Report?.AmountInflows - Result?.Report?.AmountOutflows;
+		if(balance.HasValue)
+			return balance.Value.ToString("N2");
+		return "no balance";
+	}
+}

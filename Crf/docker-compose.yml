@@ -1,0 +1,33 @@
+version: '3.4'
+
+networks:
+  crf-dev:
+    driver: bridge
+
+services:
+  crf.serverapp:
+    image: ${DOCKER_REGISTRY-}crfserverapp
+    build:
+      context: .
+      dockerfile: Crf.ServerApp/Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      ConnectionStrings__DefaultConnection: "host=postgres_image;Port=5432;Database=cash-flow-crf;User Id=crf;Password=kdi4BU0ZQuI8rplv;"
+    networks:
+      - crf-dev
+  postgres_image:
+    image: postgres:latest
+    ports:
+      - "5432"
+    restart: always
+    volumes:
+      - crf_db_volume:/var/lib/postgressql/data
+    environment:
+      POSTGRES_USER: "crf"
+      POSTGRES_PASSWORD: "kdi4BU0ZQuI8rplv"
+      POSTGRES_DB: "cash-flow-crf"
+    networks:
+      - crf-dev
+volumes:
+  crf_db_volume:

@@ -1,0 +1,93 @@
+﻿@page "/financial-postings"
+@using Crf.Application.CashFlow.Interfaces;
+@using Crf.Application.Interfaces;
+@using Crf.Domain.Entities;
+@using Crf.Infrastructure.Repositories.CashFlow;
+@inject IFinancialReleaseControl _financialService;
+@*@inject IFinancialReleaseReport _financialReleaseReport;*@
+@inject IAccountRepository _repository;
+
+@attribute [Authorize]
+
+
+
+<div class="row mt-4">
+	<div class="col-6">
+		<h4 class="card-title text-primary">Financial flow</h4>
+	</div>
+	<div class="col-4 offset-2">
+		<a href="financial-postings/create" class="btn btn-primary form-control">Add new financial launch</a>
+	</div>
+
+	<div class="col-12 p-3">
+		@if (Account.Any())
+		{
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Type</th>
+						<th>Description</th>
+						<th>Amount</th>
+						<th>Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var activity in Account.FirstOrDefault()!.Activities)
+					{
+						<tr>
+							<td>
+								@activity.TypeActivity.ToString()
+							</td>
+							<td>
+								@activity.Description
+							</td>
+							<td>
+								$ @activity.Amount.ToString("N2")
+							</td>
+							<td>
+								@activity.Created.ToString("yyyy-MM-dd HH:mm:ss")
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+		else
+		{
+			if (IsLoading)
+			{
+				//loading gif
+				<div class="text-center">
+					<img src="/images/loading.gif">
+				</div>
+			}
+			else
+			{
+			//no records
+				<p>No recrods found.</p>
+			}
+		}
+	</div>
+</div>
+
+@code {
+	private IEnumerable<Account> Account { get; set; } = new List<Account>();
+	public bool IsLoading { get; set; }
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			await LoadAccount();
+		}
+	}
+
+	private async Task LoadAccount()
+	{
+		IsLoading = true;
+		StateHasChanged();
+		Account = await _repository.GetAll();
+		IsLoading = false;
+		StateHasChanged();
+	}
+}

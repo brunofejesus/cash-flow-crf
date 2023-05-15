@@ -1,0 +1,81 @@
+﻿@page "/financial-postings/create"
+@using Crf.Application.CashFlow.CreateFinancialLaunch;
+@using Crf.Application.CashFlow.Interfaces;
+@using Crf.Application.CashFlow.Models;
+@using Crf.Infrastructure.Repositories.CashFlow;
+@using System.Globalization;
+@inject IFinancialReleaseControl _financialService;
+@inject NavigationManager _navigationManager
+@inject IJSRuntime _jsRuntime
+@attribute [Authorize]
+
+
+<div class="row my-2">
+  <h3 class="card-title text-primary mb-3 ml-3">@Title new financial launch</h3>
+
+  <div class="col-10">
+    @if (IsLoading)
+    {
+      <div class="text-center">
+        <img src="/images/loading.gif">
+      </div>
+    }
+    else
+    {
+      <EditForm Model="Command" OnValidSubmit="UpsertFinancialLaunch">
+        <DataAnnotationsValidator />
+
+        <div class="form-group">
+          <label>Type</label>
+          <InputSelect @bind-Value="Command.TypeActivity" class="form-control">
+            <option value="">Select type ...</option>
+            <option value="Debit">Debit</option>
+            <option value="Credit">Credit</option>
+          </InputSelect>
+          
+
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <InputText @bind-Value="Command.Description" class="form-control"></InputText>
+        </div>
+
+        <div class="form-group">
+          <label>Amount</label>
+          <CurrencyInput TValue="decimal" @bind-Value="Command.Amount" Placeholder="Enter amount" Locale="en-US" />
+        </div>
+        
+        <div class="form-group py-2">
+          <button class="btn btn-primary">@Title</button>
+          <NavLink href="financial-postings" class="btn btn-secondary">Back to Index</NavLink>
+        </div>
+      </EditForm>
+
+    }
+  </div>
+</div>
+
+@code {
+  private CreateFinancialLaunchCommand Command { get; set; } = new CreateFinancialLaunchCommand();
+
+  public bool IsLoading { get; set; }
+
+  private string Title { get; set; } = "Add a";
+
+  private async Task UpsertFinancialLaunch()
+  {
+    var result = await _financialService.AddFinancialLaunch(Command);
+    if (result.Succeeded)
+    {
+      await _jsRuntime.InvokeVoidAsync("ShowToastr", "success", "Successfully added");
+
+      _navigationManager.NavigateTo("financial-postings");
+    }
+    if(!result.Succeeded) 
+    {
+      var messageError = result.Errors.FirstOrDefault();
+      await _jsRuntime.InvokeVoidAsync("ShowToastr", "error", messageError!);
+    }
+  }
+}
