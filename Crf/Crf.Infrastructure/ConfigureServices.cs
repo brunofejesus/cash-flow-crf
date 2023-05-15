@@ -1,6 +1,7 @@
 ﻿using Crf.Application.CashFlow.Interfaces;
 using Crf.Application.Common.Interfaces;
 using Crf.Application.Interfaces;
+using Crf.Domain.Enums;
 using Crf.Infrastructure.CashFlow;
 using Crf.Infrastructure.Identity;
 using Crf.Infrastructure.Persistence;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 
 namespace Crf.Infrastructure
 {
@@ -17,6 +19,8 @@ namespace Crf.Infrastructure
 	{
 		public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
 		{
+			NpgsqlConnection.GlobalTypeMapper.MapEnum<ETypeActivity>("e_type_activity");
+
 			services.AddDbContext<ApplicationDbContext>(op =>
 				op.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
 						builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));

@@ -4,6 +4,7 @@ using Crf.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 
 namespace Crf.Infrastructure.Persistence
 {
@@ -85,11 +86,14 @@ namespace Crf.Infrastructure.Persistence
 					amount: 100
 				));
 
-			var accounts = await _repository.GetAll();
+			await _context.Database.OpenConnectionAsync();
+			((NpgsqlConnection)_context.Database.GetDbConnection()).ReloadTypes();
+			var accounts = await _context.Accounts.ToListAsync();
+
 			if (!accounts.Any())
 			{
-				_repository.Create(account);
-				_unityOfWork.Commit();
+				_context.Accounts.Add(account);
+				await _context.SaveChangesAsync();
 			}
 		}
 	}

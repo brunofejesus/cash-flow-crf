@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Crf.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230514003526_DatabaseCreate")]
+    [Migration("20230515124325_DatabaseCreate")]
     partial class DatabaseCreate
     {
         /// <inheritdoc />

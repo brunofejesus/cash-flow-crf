@@ -18,7 +18,6 @@ namespace Crf.Infrastructure.Persistence.Configurations
 
 			builder.Property(x => x.TypeActivity)
 				.HasColumnName("type_activity")
-				.HasColumnType("e_type_activity")
 				.IsRequired();
 
 			builder.Property(x => x.AccountId)

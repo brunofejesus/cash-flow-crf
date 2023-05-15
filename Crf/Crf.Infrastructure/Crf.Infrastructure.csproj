@@ -16,8 +16,4 @@
     <ProjectReference Include="..\Crf.Application\Crf.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Persistence\Migrations\" />
-  </ItemGroup>
-
 </Project>
