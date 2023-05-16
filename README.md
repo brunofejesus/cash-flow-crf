@@ -8,6 +8,8 @@ Utilizando Clean architecture e Mediator.
 ## Instalação da aplicação
 
 **Utilizando Docker:**
+
+**Requisitos mínimos:** docker instalado na maquina.
 Acesse a pasta **cash-flow-crf/**Crf**/** onde está localizado o arquivo **docker-compose.yml**
 Execute os seguintes comandos utilizando o terminal:
 
@@ -19,6 +21,16 @@ Após terminar, execute em seguida:
 
 Isso ira subir o banco de dados postgres e a aplicação web **Crf.ServerApp**.
 Para acessar a aplicação utilize a seguinte URL no navegador: http://localhost:8000, se preferir alterar a porta, acesse o arquivo docker-compose.yml e altere a linha 16.
+
+**Utilizando Visual Studio:**
+
+**Requisitos mínimos**: postgres instalado na maquina.
+
+1.  Defina o projeto **Crf.ServerApp** como projeto de inicialização,
+    como mostrado na imagem abaixo:
+2.  Altere o arquivo **appsettings.json** localizado no projeto
+    **Crf.ServerApp** para informar o endereço do banco de dados postgres instalado na sua maquina, como mostrado na imagem abaixo:
+3.  Execute o projeto.
 
 ## Itens da solução
 

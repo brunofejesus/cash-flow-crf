@@ -10,6 +10,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FD4FFB31-0348-4ED4-B89B-65076B363980}"
 	ProjectSection(SolutionItems) = preProject
 		..\.gitignore = ..\.gitignore
+		C:\Users\bruno\OneDrive\Imagens\DesafioCrf\AppSettingsJson.png = C:\Users\bruno\OneDrive\Imagens\DesafioCrf\AppSettingsJson.png
+		..\..\crf-desenho-solucao.png = ..\..\crf-desenho-solucao.png
+		C:\Users\bruno\OneDrive\Imagens\DesafioCrf\ProjetoDeInicializacao.png = C:\Users\bruno\OneDrive\Imagens\DesafioCrf\ProjetoDeInicializacao.png
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crf.Application", "Crf.Application\Crf.Application.csproj", "{0F0F262D-7783-40D4-9515-23EDD7478E5C}"
@@ -22,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crf.ServerApp", "Crf.Server
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{DB88A318-A3D3-4E2A-AD84-815990039CE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crf.Application.UnitTests", "..\Crf.Application.UnitTests\Crf.Application.UnitTests.csproj", "{6F76A269-F2BB-4F2F-A571-3769E0AB9059}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crf.Application.UnitTests", "..\Crf.Application.UnitTests\Crf.Application.UnitTests.csproj", "{6F76A269-F2BB-4F2F-A571-3769E0AB9059}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
