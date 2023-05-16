@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.7'
 
 networks:
   crf-dev:
@@ -10,8 +10,16 @@ services:
     build:
       context: .
       dockerfile: Crf.ServerApp/Dockerfile
+    depends_on:
+      - postgres_image
     ports:
-      - "8080:80"
+      - "8000:80"
+      - "8001:443" 
+    expose:
+      - 80
+      - 443
+      - 8000
+      - 8001
     environment:
       ConnectionStrings__DefaultConnection: "host=postgres_image;Port=5432;Database=cash-flow-crf;User Id=crf;Password=kdi4BU0ZQuI8rplv;"
     networks:

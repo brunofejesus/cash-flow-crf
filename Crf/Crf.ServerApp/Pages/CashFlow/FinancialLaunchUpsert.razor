@@ -2,7 +2,6 @@
 @using Crf.Application.CashFlow.CreateFinancialLaunch;
 @using Crf.Application.CashFlow.Interfaces;
 @using Crf.Application.CashFlow.Models;
-@using Crf.Infrastructure.Repositories.CashFlow;
 @using System.Globalization;
 @inject IFinancialReleaseControl _financialService;
 @inject NavigationManager _navigationManager
@@ -41,9 +40,15 @@
           <InputText @bind-Value="Command.Description" class="form-control"></InputText>
         </div>
 
+
         <div class="form-group">
           <label>Amount</label>
           <CurrencyInput TValue="decimal" @bind-Value="Command.Amount" Placeholder="Enter amount" Locale="en-US" />
+        </div>
+
+        <div class="form-group">
+          <label>Date</label>
+          <DateInput TValue="DateTime?" @bind-Value="Command.LaunchDate" Placeholder="Enter Date" class="form-control" />
         </div>
         
         <div class="form-group py-2">

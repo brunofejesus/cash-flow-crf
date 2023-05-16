@@ -21,12 +21,12 @@ namespace Crf.Domain.Entities
 			Account = account;
 		}
 
-		public Activity(ETypeActivity typeActivity, string description, decimal amount)
+		public Activity(ETypeActivity typeActivity, string description, decimal amount, DateTime created)
 		{
 			TypeActivity = typeActivity;
 			Description = description;
 			Amount = amount;
-			Created = DateTime.UtcNow;
+			Created = created;
 		}
 	}
 }

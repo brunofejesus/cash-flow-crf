@@ -27,12 +27,11 @@ var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextI
 await initialiser.InitialiseAsync();
 await initialiser.SeedAsync();
 
-app.UseHttpsRedirection();
-
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 

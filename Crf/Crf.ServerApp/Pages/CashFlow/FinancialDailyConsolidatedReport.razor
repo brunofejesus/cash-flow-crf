@@ -62,7 +62,7 @@
 					</tr>
 					<tr>
 						<td colspan="3">Balance</td>
-						<td>@CalculateBalance()</td>
+						<td>$ @CalculateBalance()</td>
 					</tr>
 				</tfoot>
 			</table>
@@ -101,6 +101,10 @@
 
 	private async Task LoadReport()
 	{
+		if (!Query.Date.HasValue)
+		{
+			Query.Date = DateTime.UtcNow;
+		}
 		IsLoading = true;
 		StateHasChanged();
 		Result = await _financialReportService.GetDailyConsolidatedReport(Query);

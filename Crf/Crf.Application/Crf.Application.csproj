@@ -15,8 +15,4 @@
     <ProjectReference Include="..\Crf.Domain\Crf.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-
 </Project>
